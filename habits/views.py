@@ -12,6 +12,9 @@ class HabitsViewSet(viewsets.ModelViewSet):
     serializer_class = HabitSerializer
     pagination_class = HabitPagination
 
+    def get_queryset(self):
+        return Habit.objects.filter(user=self.request.user)
+
     def perform_create(self, serializer):
         habit = serializer.save()
         habit.user = self.request.user

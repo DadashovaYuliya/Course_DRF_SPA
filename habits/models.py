@@ -33,10 +33,11 @@ class Habit(models.Model):
     )
     time_to_complete = models.PositiveIntegerField(blank=True, null=True, verbose_name="Время на выполнение в минутах")
     is_public = models.BooleanField(default=False, verbose_name="Признак публичности")
+    notified = models.BooleanField(default=False, verbose_name="Уведомление отправлено")
 
     class Meta:
         verbose_name = "Привычка"
         verbose_name_plural = "Привычки"
 
     def __str__(self):
-        return f"{self.name} ({'приятная' if self.is_pleasant else 'полезная'})"
+        return f"{self.name} ({'приятная' if self.is_pleasant_habit else 'полезная'})"
