@@ -4,21 +4,24 @@ import requests
 from celery import shared_task
 from rest_framework import response
 
-from config import settings
+from django.conf import settings
 from habits.models import Habit
 
 
 @shared_task
-def send_message(pk):
+def send_message():
     """Отправляет напоминание пользователю о привычке."""
     now = timezone.now()
     time_start = now + timedelta(minutes=5)
     time_end = now + timedelta(minutes=10)
 
-    habit = Habit.objects.filter(pk=pk, time__gte=time_start,
-        time__lte=time_end, notified=False)
+    habits = Habit.objects.select_related('user').filter(
+        time__gte=time_start,
+        time__lte=time_end, notified=False,
+        user__tg_chat_id__isnull = False,
+    )
 
-    for h in habit:
+    for habit in habits:
         if not habit.user.tg_chat_id:
             continue
         message = (
@@ -32,4 +35,4 @@ def send_message(pk):
         requests.get(f"{settings.TELEGRAM_URL}{settings.TELEGRAM_TOKEN}/sendMessage", params=params)
         if response.status_code == 200:
             habit.notified = True
-            habit.save()
+            habit.save(update_fields=['notified'])
