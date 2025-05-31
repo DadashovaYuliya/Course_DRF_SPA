@@ -183,7 +183,7 @@ CELERY_BEAT_SCHEDULE = "django_celery_beat_schedulers:DatabaseScheduler"
 
 CELERY_BEAT_SCHEDULE = {
     "send_message": {
-        'task': 'habits.tasks.send_message',  # Путь к задаче
-        'schedule': timedelta(minutes=10),  # Расписание выполнения задачи
+        "task": "habits.tasks.send_message",  # Путь к задаче
+        "schedule": timedelta(minutes=10),  # Расписание выполнения задачи
     },
 }
