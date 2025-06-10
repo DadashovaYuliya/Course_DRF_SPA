@@ -1,7 +1,8 @@
-import os
+# flake8: noqa
 import eventlet
-
 eventlet.monkey_patch()
+
+import os
 
 from celery import Celery
 
