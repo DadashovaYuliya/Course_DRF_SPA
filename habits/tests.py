@@ -78,6 +78,7 @@ class HabitTestCase(APITestCase):
                     "time_to_complete": None,
                     "is_public": False,
                     "user": self.habit.user.id,
+                    "notified": False,
                     "related_habit": None,
                 }
             ],
